@@ -1,0 +1,30 @@
+@import 'colors'
+
+:host
+    display: block
+    border-radius: 100px
+    width: 18px
+    height: 8px
+    position: relative
+    background: $light-yellow
+
+
+
+    & div.handle
+        transition: .1s linear all
+        border-radius: 100px
+        position: absolute
+        width: 6px
+        height: 4px
+        top: 2px
+        background: $yellow
+        right: 2px
+
+
+    &.disabled
+        background: $light-red
+
+        & div.handle
+            right: 10px
+            background: $red
+

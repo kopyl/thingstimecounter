@@ -1,0 +1,25 @@
+@import 'colors', 'typography'
+
+:host
+    color: $light-grey
+    font-weight: $todo-duration-weight
+    font-size: $todo-duration-size
+
+
+    & p::after
+        content: ""
+        height: 1px
+        background: $light-grey
+        width: 0%
+        display: block
+        position: absolute
+        left: -5%
+        top: 50%
+        transition: .1s linear all
+
+    &.crossed p::after
+        width: 110%
+
+p
+    display: inline-block
+    position: relative

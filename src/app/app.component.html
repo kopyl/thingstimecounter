@@ -1,0 +1,28 @@
+
+<div class="todos-area"
+    (drop)=onDragOver($event)
+    (dragover)=onDragOver($event)
+>
+
+    <div class="todos">
+
+        <todo-component
+
+            *ngFor="let todo of appTodos"
+
+            [ngStyle]="{'animation-delay': todo.delayToAppear}"
+
+            [todoTitle]=todo.title
+            [duration]=todo.duration
+
+            [class.isRemoved]=todo.isRemoved
+
+            matRipple
+            matRippleColor="rgba(229, 34, 34, 0.3)"
+
+        ></todo-component>
+
+    </div>
+
+
+</div>
