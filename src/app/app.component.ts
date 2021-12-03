@@ -1,13 +1,15 @@
 import { Component, HostListener } from '@angular/core';
-import  { ParseTodos } from './parseTodos'
+import  { Todos } from './loadedTodos'
+import { TodoComponent } from './modules/todo/todo-component/todo-component.component'
+import { TotalTimeService } from './total-time.service'
 
 interface appTodo {
     title: string,
     duration: string,
-    delayToAppear: string,
-    isRemoved: boolean
+    delayToAppear?: string,
+    isRemoved?: boolean,
+    rawDurationMs?: number
 }
-
 
 @Component({
     selector: 'app-root',
@@ -21,17 +23,20 @@ export class AppComponent {
     clipboard: string
 
 
+    constructor(private totalTime: TotalTimeService) {}
+
+
     addTodosFromClipboard() {
 
         if (this.appTodos.length) {
             this.removeCurrentTodos()
             setTimeout(() => (
                 navigator.clipboard.readText()
-                .then(e => this.loadTodos(e) )
+                .then(e => this.addTodosToApp(e) )
             ), 100)
         } else {
             navigator.clipboard.readText()
-            .then(e => this.loadTodos(e) )
+            .then(e => this.addTodosToApp(e) )
         }
 
     }
@@ -47,48 +52,16 @@ export class AppComponent {
     }
 
 
-    addTodosToApp() {
+    addTodosToApp(source: any) {
 
-        for (const todo of this.loadedTodos) {
+        const todosObj = new Todos(source)
+
+        for (const todo of todosObj.todos) {
             this.appTodos.push(todo)
         }
 
-    }
+        console.log(new TodoComponent(this.totalTime));
 
-
-    loadTodos(source: any) {
-
-        this.loadedTodos = []
-
-        const parsedTodos = new ParseTodos(source)
-
-        for (const todo of parsedTodos.todos) {
-
-            const loadedTodo: any = {
-                title: todo.text,
-                isRemoved: false
-            }
-
-            const time = todo.time
-            const durationList = []
-            if (time.hours) {
-                durationList.push(`${time.hours}h`)
-            }
-            if (time.minutes) {
-                durationList.push(`${time.minutes}m`)
-            }
-            loadedTodo.duration = durationList.join(" ")
-
-            type delay = number | string
-            let delay: delay = this.loadedTodos.length*10
-            delay = `${delay}ms`
-            loadedTodo.delayToAppear = delay
-
-            this.loadedTodos.push(loadedTodo)
-
-        }
-
-        this.addTodosToApp()
 
     }
 
@@ -118,10 +91,10 @@ export class AppComponent {
         if (this.appTodos.length) {
             this.removeCurrentTodos()
             setTimeout(() => (
-                this.loadTodos(text)
+                this.addTodosToApp(text)
             ), 100)
         } else {
-            this.loadTodos(text)
+            this.addTodosToApp(text)
         }
 
     }

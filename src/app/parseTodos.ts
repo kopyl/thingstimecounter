@@ -7,6 +7,8 @@ export class ParseTodos {
 
     todos: Array<any> = this.getTodos()
 
+    totalTime: any = this.getTotalTime()
+
 
     getTodos() {
         let allLines: Array<string> = this.string.split("\n")
@@ -18,6 +20,26 @@ export class ParseTodos {
         )
         todos = todos.filter(todo => todo.text)
         return todos
+    }
+
+    getTotalTime(){
+        const totalTime: any = {}
+
+        totalTime.seconds = this.todos.reduce(
+            (prev, curr) => {
+                prev.time.seconds =
+                prev.time.seconds +
+                curr.time.seconds
+                return prev
+            },
+            {time: {seconds: 0 }}
+        ).time.seconds
+
+        console.log(totalTime.seconds)
+
+        return totalTime
+
+
     }
 
 }

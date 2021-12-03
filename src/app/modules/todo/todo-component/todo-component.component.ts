@@ -7,6 +7,8 @@ import {
     HostListener,
 } from '@angular/core';
 
+import { TotalTimeService } from '../../../total-time.service'
+
 
 
 @Component({
@@ -16,7 +18,7 @@ import {
 })
 export class TodoComponent implements AfterViewInit {
 
-    constructor() { }
+    constructor(private totalTime: TotalTimeService) { }
 
     @Input('todoTitle') todoTitle: string
     @Input('duration') durationText: string = "1m"
@@ -48,6 +50,7 @@ export class TodoComponent implements AfterViewInit {
         this.status == "normal" ?
         this.disable() :
         this.enable()
+        // this.totalTime.recalculate(this.status)
     }
 
     reloadState() {
