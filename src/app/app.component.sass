@@ -1,11 +1,183 @@
+@import 'colors', 'typography'
+
+
 :host
-    display: block
+    display: grid
+    grid-template-rows: 59px auto
+    grid-gap: 35px
     height: 100%
+
+    @media ( max-width: 700px)
+        grid-template-rows: auto 59px 0px
+        grid-gap: 15px
 
 
 .todos-area
     height: 100%
     overflow-y: scroll
+
+
+header
+    // background: $grey
+
+
+    .hours > .hours,
+    .minutes > .minutes,
+    p.time
+        color: $yellow
+
+
+
+
+    // display: grid
+    // grid-template-columns: auto minmax(100px, 1fr)
+    // grid-template-columns: auto minmax(5px, 300px)
+    //  grid-template-columns: minmax(200px, 1fr) 1fr 1fr
+    //  grid-template-columns: minmax(200px, 1fr) 1fr
+    // grid-template-columns: auto minmax(auto, min-content)
+
+    // grid-template-columns: auto minmax(10px, 100px)
+    display: flex
+
+    gap: 15px
+
+    @media ( max-width: 700px)
+        gap: 4px
+        grid-row: 2
+
+        // margin-bottom: 10px
+
+    & > div.time
+
+        flex-grow: 2
+
+        display: grid
+        grid-template-columns: auto auto
+
+        background: $grey
+
+        border-radius: 6px
+
+        font-size: $header-title-size
+        font-weight: $header-title-weight
+
+        & > div.till
+
+            padding: 4px 4px
+
+            & > div.button
+
+                display: inline-block
+
+                padding-left: 13px
+                padding-top: 13px
+                padding-bottom: 13px
+                padding-right: 22px
+
+                border-radius: 4px
+
+                cursor: pointer
+
+                background: $grey
+
+                transition: .1s linear background
+
+                &:hover
+                    background: $blue
+
+
+                & button
+                    display: inline-block
+                    background-color: $blue
+                    height: 25px
+                    width: 25px
+                    border: none
+                    border-radius: 100%
+
+                    background-image: url('../assets/reloadIcon.svg')
+                    background-repeat: no-repeat
+                    background-position: 55% 50%
+
+                    vertical-align: middle
+
+                    margin-right: 14px
+
+                & p
+
+                    &:first-of-type
+                        margin-right: 4px
+
+                    display: inline-block
+                    vertical-align: middle
+
+        & > div.total
+
+            justify-self: end
+            display: grid
+            position: relative
+            top: -1px
+
+            // vertical-align: middle
+
+            // align-content: middle
+            align-items: center
+            // align-content: center
+            // justify-items: end
+            // grid-template-columns: auto
+
+            padding-right: 23px
+
+            div, p
+                display: inline-block
+                vertical-align: middle
+
+            div.minutes
+                margin-left: 4px
+
+    button.repaste
+
+        flex-grow: 1
+        max-width: 147px
+
+        border: none
+
+        background-color: transparent
+        border-radius: 6px
+
+        color: transparent
+
+        &::after
+
+            color: white
+            content: "Repaste"
+            width: 100%
+            height: 100%
+            line-height: 59px
+            background-color: $blue
+            transition: .1s linear top
+
+            position: absolute
+            top: 0
+            left: 0
+
+        &::before
+            color: white
+            content: "Repaste"
+            width: 100%
+            height: 100%
+            line-height: 59px
+            background-color: $red
+            transition: .2s linear top
+
+            position: absolute
+            top: 100px
+            left: 0
+
+        &:hover::after
+            top: -59px
+
+        &:hover::before
+            top: 0
 
 
 div.todos

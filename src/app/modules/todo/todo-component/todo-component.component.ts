@@ -23,6 +23,7 @@ export class TodoComponent implements AfterViewInit {
     @Input('todoTitle') todoTitle: string
     @Input('durationMs') durationMs: number
     @Input('duration') durationText: string = "1m"
+    @Input('delayToAppear') delayToAppear: string = "1m"
 
     @ViewChild('duration') duration: any
     @ViewChild('toggle') toggle: any

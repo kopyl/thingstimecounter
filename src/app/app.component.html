@@ -1,3 +1,29 @@
+<header>
+    <div class="time">
+        <div class="till">
+            <div class="button">
+                <button class="reload"></button>
+                <p>Till</p>
+                <p #tilltime class="time">11:05</p>
+            </div>
+        </div>
+        <div class="total">
+            <div class="content">
+                <div class="hours">
+                    <p class="hours">11</p>
+                    <p #totalhours>h</p>
+                </div>
+                <div class="minutes">
+                    <p class="minutes">18</p>
+                    <p #totalminutes>m</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="repaste"> -->
+        <button class="repaste">Repaste</button>
+    <!-- </div> -->
+</header>
 
 <div class="todos-area"
     (drop)=onDragOver($event)

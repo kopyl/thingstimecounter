@@ -75,6 +75,7 @@ export class AppComponent {
             todoComponent.todoTitle = todo.title
             todoComponent.durationText = todo.duration
             todoComponent.durationMs = todo.rawDurationMs!
+            todoComponent.delayToAppear = todo.delayToAppear!
             this.appTodos.push(todoComponent)
         }
 
