@@ -12,8 +12,9 @@
 
             [ngStyle]="{'animation-delay': todo.delayToAppear}"
 
-            [todoTitle]=todo.title
-            [duration]=todo.duration
+            [todoTitle]=todo.todoTitle
+            [duration]=todo.durationText
+            [durationMs]=todo.durationMs
 
             [class.isRemoved]=todo.isRemoved
 

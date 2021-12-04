@@ -21,6 +21,7 @@ export class TodoComponent implements AfterViewInit {
     constructor(private totalTime: TotalTimeService) { }
 
     @Input('todoTitle') todoTitle: string
+    @Input('durationMs') durationMs: number
     @Input('duration') durationText: string = "1m"
 
     @ViewChild('duration') duration: any
@@ -28,6 +29,7 @@ export class TodoComponent implements AfterViewInit {
 
     @HostBinding('class')
     @Input('status') status: string = "normal"
+
 
 
     @HostListener('click') click(event: Event) {
@@ -50,7 +52,10 @@ export class TodoComponent implements AfterViewInit {
         this.status == "normal" ?
         this.disable() :
         this.enable()
+
         // this.totalTime.recalculate(this.status)
+        this.totalTime.recalculate(this.status, this.durationMs)
+
     }
 
     reloadState() {
@@ -61,6 +66,9 @@ export class TodoComponent implements AfterViewInit {
 
     ngAfterViewInit(): void {
         this.reloadState()
+
+        // console.log(this.durationMs)
+
     }
 
 

@@ -19,7 +19,8 @@ interface appTodo {
 export class AppComponent {
 
     loadedTodos: Array<appTodo> = []
-    appTodos: Array<appTodo> = []
+    // appTodos: Array<appTodo> = []
+    appTodos: Array<any> = []
     clipboard: string
 
 
@@ -56,11 +57,26 @@ export class AppComponent {
 
         const todosObj = new Todos(source)
 
-        for (const todo of todosObj.todos) {
-            this.appTodos.push(todo)
-        }
+        this.totalTime.seconds = todosObj.totalTime.seconds
 
-        console.log(new TodoComponent(this.totalTime));
+
+        // console.log(todosObj);
+
+        console.log(this.totalTime.hours, this.totalTime.minutes)
+        // console.log(this.totalTime.seconds)
+
+
+
+        for (const todo of todosObj.todos) {
+
+            // console.log(todo);
+
+            const todoComponent = new TodoComponent(this.totalTime)
+            todoComponent.todoTitle = todo.title
+            todoComponent.durationText = todo.duration
+            todoComponent.durationMs = todo.rawDurationMs!
+            this.appTodos.push(todoComponent)
+        }
 
 
     }

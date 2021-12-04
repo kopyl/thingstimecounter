@@ -35,8 +35,6 @@ export class ParseTodos {
             {time: {seconds: 0 }}
         ).time.seconds
 
-        console.log(totalTime.seconds)
-
         return totalTime
 
 

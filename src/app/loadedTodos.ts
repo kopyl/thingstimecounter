@@ -14,13 +14,13 @@ interface appTodo {
 
 export class Todos {
     public todos: Array<appTodo> = []
-    public totalTimeMs = 0
 
     public parsedTodos = new ParseTodos(this.source)
+    public totalTime = this.parsedTodos.totalTime
 
     constructor(private source: any){
         this.getFromParsed()
-        console.log(this.parsedTodos)
+        // console.log(this.parsedTodos)
     }
 
     getFromParsed() {
