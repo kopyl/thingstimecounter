@@ -67,7 +67,7 @@ export class TodoComponent implements AfterViewInit {
 
         // if (beforeChangeData === afterChangeData) return
 
-        if (!this.totalTime.isChanged) return
+        // if (!this.totalTime.isChanged) return
 
         this.todoToggled.emit()
 

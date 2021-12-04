@@ -1,13 +1,16 @@
 <header>
     <div class="time">
         <div class="till">
-            <div class="button">
+            <div class="button" (click)=changeTimeTillView()>
                 <button class="reload"></button>
                 <p>Till</p>
-                <p #tilltime class="time">11:05</p>
+                <div class="times" [class.updating]=isTillTimeUpdating>
+                    <p #tilltime class="time old">{{timeTillView.old}}</p>
+                    <p #tilltime class="time new">{{timeTillView.new}}</p>
+                </div>
             </div>
         </div>
-        <div class="total" [class.scrolling]=isHeaderUpdating >
+        <div class="total" [class.updating]=isTotalUpdating >
             <div class="old">
                 <div class="content">
                     <div class="hours">
@@ -59,7 +62,7 @@
             matRipple
             matRippleColor="rgba(229, 34, 34, 0.3)"
 
-            (todoToggled)="changeTotalTime()"
+            (todoToggled)="reactOnTodoToggle()"
 
         ></todo-component>
 

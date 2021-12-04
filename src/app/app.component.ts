@@ -20,11 +20,11 @@ export class AppComponent {
 
     @ViewChild('repaste') repaste: any
 
-    loadedTodos: Array<appTodo> = []
     appTodos: Array<any> = []
     clipboard: string
 
-    isHeaderUpdating: boolean = false
+    isTotalUpdating: boolean = false
+    isTillTimeUpdating: boolean = false
 
 
     constructor(public totalTime: TotalTimeService) {}
@@ -34,14 +34,32 @@ export class AppComponent {
         new: {...this.totalTime},
     }
 
+    timeTillView: any = {
+        old: this.totalTime.getTimeTill(),
+        new: this.totalTime.getTimeTill()
+    }
+
     changeTotalTime() {
 
         this.totalTimeView.new = {...this.totalTime}
-        this.isHeaderUpdating = true
+        this.isTotalUpdating = true
 
         setTimeout(() => {
             this.totalTimeView.old = {...this.totalTime}
-            this.isHeaderUpdating = false
+            this.isTotalUpdating = false
+        }, 100 )
+
+    }
+
+    changeTimeTillView() {
+
+        this.timeTillView.new = this.totalTime.getTimeTill()
+        this.isTillTimeUpdating = true
+
+
+        setTimeout(() => {
+            this.timeTillView.old = this.totalTime.getTimeTill()
+            this.isTillTimeUpdating = false
         }, 100 )
 
     }
@@ -83,6 +101,8 @@ export class AppComponent {
             this.changeTotalTime()
         }
 
+        this.changeTimeTillView()
+
         for (const todo of todosObj.todos) {
             const todoComponent = new TodoComponent(this.totalTime)
             todoComponent.todoTitle = todo.title
@@ -93,6 +113,13 @@ export class AppComponent {
         }
 
 
+    }
+
+    reactOnTodoToggle() {
+        if (this.totalTime.isChanged) {
+            this.changeTotalTime()
+        }
+        this.changeTimeTillView()
     }
 
 

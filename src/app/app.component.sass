@@ -54,7 +54,11 @@ header
         flex-grow: 2
 
         display: grid
-        grid-template-columns: auto auto
+        grid-template-columns: 68% auto
+
+        // display: flex
+
+        // flex-basis: 3
 
         background: $grey
 
@@ -63,9 +67,16 @@ header
         font-size: $header-title-size
         font-weight: $header-title-weight
 
+        @media ( max-width: 700px)
+            font-size: 15px
+
         & > div.till
 
+            user-select: none
+
             padding: 4px 4px
+
+            position: relative
 
             & > div.button
 
@@ -83,6 +94,12 @@ header
                 background: $grey
 
                 transition: .1s linear background
+
+                position: relative
+
+
+                &:hover
+                    overflow: hidden
 
                 &:hover
                     background: $blue
@@ -115,30 +132,35 @@ header
                     display: inline-block
                     vertical-align: middle
 
-        & div.total
 
-            // align-items: end
+                    &.old
+
+                    &.new
+                        position: absolute
+                        top: 52px
+                        left: 0
+
+
+
+
+
+        & div.total
 
             justify-items: end
 
-            // justify-self: end
-            // align-self: self-end
             display: grid
             position: relative
             top: -2px
-            // text-align: right
 
-            &.scrolling
+            &.updating
 
-                // animation: .1s linear fuck forwards
-
-                animation-name: fuck, fuckback
+                animation-name: secondSlideTotal, firstSLideTotal
                 animation-duration: .1s, 0s
                 animation-iteration-count: 1, 1
                 animation-fill-mode: forwards, forwards
                 animation-delay: 0s, .3s
 
-                // animation: .2s linear fuck
+                // animation: .2s linear secondSlideTotal
 
 
             align-items: center
@@ -154,9 +176,12 @@ header
 
             & .new
                 position: absolute
-                top: 56px
+                top: 57px
                 right: 23px
-                // top: 40px
+
+            & .old
+                position: absolute
+                right: 23px
 
     button.repaste
 
@@ -236,14 +261,42 @@ div.todos
 
 
 
-// .total .old
-//     top: -10px
+div.times
+    display: inline-block
+
+    position: relative
+
+    // overflow: hidden
+
+    &.updating
+
+        animation-name: secondSlideTill, firstSLideTill
+        animation-duration: .1s, 0s
+        animation-iteration-count: 1, 1
+        animation-fill-mode: forwards, forwards
+        animation-delay: 0s, .3s
+
+        // animation: 1s linear testanimation
+
+
+
+@keyframes testanimation
+    0%
+        top: 0
+    100%
+        top: 10px
 
 
 
 
 
-@keyframes fuck
+@keyframes firstSLideTotal
+    0%
+      top: -40px
+    100%
+        top: -2px
+
+@keyframes secondSlideTotal
     0%
       top: -2px
     100%
@@ -252,9 +305,24 @@ div.todos
 
 
 
-@keyframes fuckback
+
+
+@keyframes firstSLideTill
     0%
-      top: -40px
+      top: -38px
     100%
         top: -2px
+
+@keyframes secondSlideTill
+    0%
+        top: -2px
+    100%
+        top: -38px
+
+
+
+
+
+
+
 

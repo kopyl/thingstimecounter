@@ -9,6 +9,8 @@ export class TotalTimeService {
     hours: number = 0
     minutes: number = 0
 
+    timeTill: string = new Date( Date.now() ).toLocaleTimeString('en-GB')
+
     isChanged: boolean = false
 
     get seconds() {
@@ -24,7 +26,14 @@ export class TotalTimeService {
         this.recalculateDetails()
     }
 
-    private recalculateDetails() {
+    getTimeTill() {
+        console.log("getting time till");
+
+        const date = new Date(Date.now() + this.seconds * 1000)
+        return date.toLocaleTimeString('en-GB')
+    }
+
+    public recalculateDetails() {
 
         this.isChanged = false
 
@@ -37,6 +46,8 @@ export class TotalTimeService {
         this.minutes = this.minutes - 60 * this.hours
 
         const afterChangeData = JSON.stringify(this)
+
+        this.timeTill = this.getTimeTill()
 
         if (beforeChangeData != afterChangeData) {
             this.isChanged = true
