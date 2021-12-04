@@ -18,11 +18,13 @@
 
 
 header
+
+    overflow: hidden
     // background: $grey
 
 
-    .hours > .hours,
-    .minutes > .minutes,
+    .hours .hours,
+    .minutes .minutes,
     p.time
         color: $yellow
 
@@ -85,6 +87,9 @@ header
                 &:hover
                     background: $blue
 
+                    @media ( max-width: 700px)
+                        background: $grey
+
 
                 & button
                     display: inline-block
@@ -110,20 +115,33 @@ header
                     display: inline-block
                     vertical-align: middle
 
-        & > div.total
+        & div.total
 
-            justify-self: end
+            // align-items: end
+
+            justify-items: end
+
+            // justify-self: end
+            // align-self: self-end
             display: grid
             position: relative
-            top: -1px
+            top: -2px
+            // text-align: right
 
-            // vertical-align: middle
+            &.scrolling
 
-            // align-content: middle
+                // animation: .1s linear fuck forwards
+
+                animation-name: fuck, fuckback
+                animation-duration: .1s, 0s
+                animation-iteration-count: 1, 1
+                animation-fill-mode: forwards, forwards
+                animation-delay: 0s, .3s
+
+                // animation: .2s linear fuck
+
+
             align-items: center
-            // align-content: center
-            // justify-items: end
-            // grid-template-columns: auto
 
             padding-right: 23px
 
@@ -133,6 +151,12 @@ header
 
             div.minutes
                 margin-left: 4px
+
+            & .new
+                position: absolute
+                top: 56px
+                right: 23px
+                // top: 40px
 
     button.repaste
 
@@ -145,6 +169,9 @@ header
         border-radius: 6px
 
         color: transparent
+
+        font-size: 14px
+        font-weight: $todo-title-weight
 
         &::after
 
@@ -176,8 +203,15 @@ header
         &:hover::after
             top: -59px
 
+            @media ( max-width: 700px)
+                top: 0
+
+
         &:hover::before
             top: 0
+
+            @media ( max-width: 700px)
+                top: 100px
 
 
 div.todos
@@ -198,4 +232,29 @@ div.todos
 
 
 
+
+
+
+
+// .total .old
+//     top: -10px
+
+
+
+
+
+@keyframes fuck
+    0%
+      top: -2px
+    100%
+        top: -40px
+
+
+
+
+@keyframes fuckback
+    0%
+      top: -40px
+    100%
+        top: -2px
 

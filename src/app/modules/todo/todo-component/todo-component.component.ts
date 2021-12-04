@@ -5,6 +5,7 @@ import {
     Input,
     ViewChild,
     HostListener,
+    EventEmitter, Output
 } from '@angular/core';
 
 import { TotalTimeService } from '../../../total-time.service'
@@ -31,6 +32,8 @@ export class TodoComponent implements AfterViewInit {
     @HostBinding('class')
     @Input('status') status: string = "normal"
 
+    @Output() todoToggled = new EventEmitter();
+
 
 
     @HostListener('click') click(event: Event) {
@@ -55,7 +58,18 @@ export class TodoComponent implements AfterViewInit {
         this.enable()
 
         // this.totalTime.recalculate(this.status)
+
+        // const beforeChangeData = JSON.stringify(this.totalTime)
+
         this.totalTime.recalculate(this.status, this.durationMs)
+
+        // const afterChangeData = JSON.stringify(this.totalTime)
+
+        // if (beforeChangeData === afterChangeData) return
+
+        if (!this.totalTime.isChanged) return
+
+        this.todoToggled.emit()
 
     }
 

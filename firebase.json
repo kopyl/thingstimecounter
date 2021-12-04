@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "n",
+    "public": "dist/ThingsTimeCounter2",
     "ignore": [
       "firebase.json",
       "**/.*",

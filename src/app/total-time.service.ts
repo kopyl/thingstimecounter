@@ -9,6 +9,8 @@ export class TotalTimeService {
     hours: number = 0
     minutes: number = 0
 
+    isChanged: boolean = false
+
     get seconds() {
         return this._seconds
     }
@@ -24,15 +26,28 @@ export class TotalTimeService {
 
     private recalculateDetails() {
 
+        this.isChanged = false
+
+        const beforeChangeData = JSON.stringify(this)
+
         this.minutes = this._seconds / 60
         this.hours = this.minutes / 60
 
         this.hours = Math.floor(this.hours)
         this.minutes = this.minutes - 60 * this.hours
 
+        const afterChangeData = JSON.stringify(this)
+
+        if (beforeChangeData != afterChangeData) {
+            this.isChanged = true
+        }
+
+
     }
 
     recalculate(status: string, duration: number){
+
+
 
         if (status == "normal") {
             this._seconds += duration
@@ -42,7 +57,6 @@ export class TotalTimeService {
 
         this.recalculateDetails()
 
-        console.log(this.hours, this.minutes);
 
 
     }

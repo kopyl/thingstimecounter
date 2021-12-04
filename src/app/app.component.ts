@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
 import  { Todos } from './loadedTodos'
 import { TodoComponent } from './modules/todo/todo-component/todo-component.component'
 import { TotalTimeService } from './total-time.service'
@@ -18,13 +18,33 @@ interface appTodo {
 })
 export class AppComponent {
 
+    @ViewChild('repaste') repaste: any
+
     loadedTodos: Array<appTodo> = []
-    // appTodos: Array<appTodo> = []
     appTodos: Array<any> = []
     clipboard: string
 
+    isHeaderUpdating: boolean = false
 
-    constructor(private totalTime: TotalTimeService) {}
+
+    constructor(public totalTime: TotalTimeService) {}
+
+    totalTimeView: any = {
+        old: {...this.totalTime},
+        new: {...this.totalTime},
+    }
+
+    changeTotalTime() {
+
+        this.totalTimeView.new = {...this.totalTime}
+        this.isHeaderUpdating = true
+
+        setTimeout(() => {
+            this.totalTimeView.old = {...this.totalTime}
+            this.isHeaderUpdating = false
+        }, 100 )
+
+    }
 
 
     addTodosFromClipboard() {
@@ -59,18 +79,11 @@ export class AppComponent {
 
         this.totalTime.seconds = todosObj.totalTime.seconds
 
-
-        // console.log(todosObj);
-
-        console.log(this.totalTime.hours, this.totalTime.minutes)
-        // console.log(this.totalTime.seconds)
-
-
+        if (this.totalTime.isChanged) {
+            this.changeTotalTime()
+        }
 
         for (const todo of todosObj.todos) {
-
-            // console.log(todo);
-
             const todoComponent = new TodoComponent(this.totalTime)
             todoComponent.todoTitle = todo.title
             todoComponent.durationText = todo.duration

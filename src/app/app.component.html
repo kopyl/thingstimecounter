@@ -7,22 +7,34 @@
                 <p #tilltime class="time">11:05</p>
             </div>
         </div>
-        <div class="total">
-            <div class="content">
-                <div class="hours">
-                    <p class="hours">11</p>
-                    <p #totalhours>h</p>
+        <div class="total" [class.scrolling]=isHeaderUpdating >
+            <div class="old">
+                <div class="content">
+                    <div class="hours">
+                        <p class="hours">{{totalTimeView.old.hours}}</p>
+                        <p #totalhours>h</p>
+                    </div>
+                    <div class="minutes">
+                        <p class="minutes">{{totalTimeView.old.minutes}}</p>
+                        <p #totalminutes>m</p>
+                    </div>
                 </div>
-                <div class="minutes">
-                    <p class="minutes">18</p>
-                    <p #totalminutes>m</p>
+            </div>
+            <div class="new">
+                <div class="content">
+                    <div class="hours">
+                        <p class="hours">{{totalTimeView.new.hours}}</p>
+                        <p #totalhours>h</p>
+                    </div>
+                    <div class="minutes">
+                        <p class="minutes">{{totalTimeView.new.minutes}}</p>
+                        <p #totalminutes>m</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- <div class="repaste"> -->
-        <button class="repaste">Repaste</button>
-    <!-- </div> -->
+    <button (click)=addTodosFromClipboard() #repaste class="repaste">Repaste</button>
 </header>
 
 <div class="todos-area"
@@ -46,6 +58,8 @@
 
             matRipple
             matRippleColor="rgba(229, 34, 34, 0.3)"
+
+            (todoToggled)="changeTotalTime()"
 
         ></todo-component>
 

@@ -168,14 +168,14 @@ export class ParseTodo {
                 time.indexOfQuotes +
                 time.rawTimeWithQuotes.length
             )
-            .trim()
         } else {
             text = this.todoRaw.substring(
                 this.todoRaw.indexOf(this.date) +
                 this.date.length
             )
-            .trim()
         }
+        text = text.replace("- [ ]", "") // on mobile Things exports different format
+        text = text.trim()
         return text
 
     }
