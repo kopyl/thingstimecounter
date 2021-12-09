@@ -67,7 +67,11 @@ export class AppComponent {
 
     addTodosFromClipboard() {
 
+        // console.log(this.appTodos.length)
+
+
         if (this.appTodos.length) {
+            // console.log(this.appTodos.length, "ok2")
             this.removeCurrentTodos()
             setTimeout(() => (
                 navigator.clipboard.readText()
@@ -83,6 +87,7 @@ export class AppComponent {
 
     removeCurrentTodos() {
 
+
         for (const todo of this.appTodos) {
             todo.delayToAppear = '0ms'
             todo.isRemoved = true
@@ -93,7 +98,15 @@ export class AppComponent {
 
     addTodosToApp(source: any) {
 
+        // if (!this.appTodos.length) return
+
+
+
         const todosObj = new Todos(source)
+        // console.log("ok", todosObj.todos);
+        // console.log("source", source);
+        if (!todosObj.todos.length) return
+        // if (!source.trim()) return
 
         this.totalTime.seconds = todosObj.totalTime.seconds
 
