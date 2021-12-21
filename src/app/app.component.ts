@@ -3,6 +3,16 @@ import  { Todos } from './loadedTodos'
 import { TodoComponent } from './modules/todo/todo-component/todo-component.component'
 import { TotalTimeService } from './total-time.service'
 
+
+const sleep = (ms: number) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const readClipboard = async () => {
+    return await navigator.clipboard.readText()
+}
+
+
 interface appTodo {
     title: string,
     duration: string,
@@ -65,22 +75,16 @@ export class AppComponent {
     }
 
 
-    addTodosFromClipboard() {
+    async addTodosFromClipboard() {
 
-        // console.log(this.appTodos.length)
-
+        const clipboard = await readClipboard()
 
         if (this.appTodos.length) {
-            // console.log(this.appTodos.length, "ok2")
             this.removeCurrentTodos()
-            setTimeout(() => (
-                navigator.clipboard.readText()
-                .then(e => this.addTodosToApp(e) )
-            ), 100)
-        } else {
-            navigator.clipboard.readText()
-            .then(e => this.addTodosToApp(e) )
+            await sleep(100)
         }
+
+        this.addTodosToApp(clipboard)
 
     }
 
