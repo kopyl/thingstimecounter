@@ -8,6 +8,7 @@ const sleep = (ms: number) => {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+
 const readClipboard = async () => {
     return await navigator.clipboard.readText()
 }
@@ -78,6 +79,8 @@ export class AppComponent {
     async addTodosFromClipboard() {
 
         const clipboard = await readClipboard()
+
+        if (!clipboard.trim()) return
 
         if (this.appTodos.length) {
             this.removeCurrentTodos()
