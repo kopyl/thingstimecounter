@@ -105,15 +105,8 @@ export class AppComponent {
 
     addTodosToApp(source: any) {
 
-        // if (!this.appTodos.length) return
-
-
-
         const todosObj = new Todos(source)
-        // console.log("ok", todosObj.todos);
-        // console.log("source", source);
         if (!todosObj.todos.length) return
-        // if (!source.trim()) return
 
         this.totalTime.seconds = todosObj.totalTime.seconds
 
