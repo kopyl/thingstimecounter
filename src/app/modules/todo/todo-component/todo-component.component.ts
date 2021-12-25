@@ -19,7 +19,7 @@ import { TotalTimeService } from '../../../total-time.service'
 })
 export class TodoComponent implements AfterViewInit {
 
-    constructor(private totalTime: TotalTimeService) { }
+    constructor(public totalTime: TotalTimeService) { }
 
     @Input('todoTitle') todoTitle: string
     @Input('durationMs') durationMs: number

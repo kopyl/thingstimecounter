@@ -1,7 +1,9 @@
-import { Component, HostListener, ViewChild } from '@angular/core';
+import { Component, HostListener, ViewChild, EventEmitter } from '@angular/core';
 import  { Todos } from './loadedTodos'
 import { TodoComponent } from './modules/todo/todo-component/todo-component.component'
 import { TotalTimeService } from './total-time.service'
+
+import { Subject } from 'rxjs';
 
 
 const sleep = (ms: number) => {
@@ -15,12 +17,17 @@ const readClipboard = async () => {
 
 
 interface appTodo {
-    title: string,
-    duration: string,
-    delayToAppear?: string,
-    isRemoved?: boolean,
-    rawDurationMs?: number
+    totalTime: TotalTimeService,
+
+    durationText: string,
+    delayToAppear: string,
+    status: string,
+    todoTitle: string,
+    durationMs: number,
+    todoToggled: Subject<any>,
+    isRemoved?: boolean
 }
+
 
 @Component({
     selector: 'app-root',
@@ -31,7 +38,7 @@ export class AppComponent {
 
     @ViewChild('repaste') repaste: any
 
-    appTodos: Array<any> = []
+    appTodos: Array<appTodo> = []
     clipboard: string
 
     isTotalUpdating: boolean = false
@@ -46,75 +53,81 @@ export class AppComponent {
     }
 
     timeTillView: any = {
-        old: this.totalTime.getTimeTill(),
-        new: this.totalTime.getTimeTill()
+        old: this.totalTime.timeTill,
+        new: this.totalTime.timeTill
     }
 
-    changeTotalTime() {
-
+    async changeTotalTime() {
         this.totalTimeView.new = {...this.totalTime}
         this.isTotalUpdating = true
 
-        setTimeout(() => {
-            this.totalTimeView.old = {...this.totalTime}
-            this.isTotalUpdating = false
-        }, 100 )
+        await sleep(100)
+        this.totalTimeView.old = {...this.totalTime}
+        this.isTotalUpdating = false
+    }
+
+    async refreshTimeTillView() {
+        this.totalTime.recalculateDetails()
+        await this.changeTimeTillView()
 
     }
 
-    changeTimeTillView() {
+    async changeTimeTillView() {
+        if (!this.totalTime.isTimeTillChanged) return
 
-        this.timeTillView.new = this.totalTime.getTimeTill()
+        this.timeTillView.new = this.totalTime.timeTill
         this.isTillTimeUpdating = true
 
-
-        setTimeout(() => {
-            this.timeTillView.old = this.totalTime.getTimeTill()
-            this.isTillTimeUpdating = false
-        }, 100 )
+        await sleep(100)
+        this.timeTillView.old = this.totalTime.getTimeTill()
+        this.isTillTimeUpdating = false
 
     }
 
 
     async addTodosFromClipboard() {
-
         const clipboard = await readClipboard()
+        this.removeAndAddTodos(clipboard)
+    }
 
-        if (!clipboard.trim()) return
+
+    async removeCurrentTodos() {
+
+        for (const todo of this.appTodos) {
+            todo.delayToAppear = '0ms'
+            todo.isRemoved = true
+        }
+        await sleep(100)
+        this.appTodos = []
+
+    }
+
+
+    async removeAndAddTodos(source: any) {
+
+        if (!source.trim()) return
 
         if (this.appTodos.length) {
             this.removeCurrentTodos()
             await sleep(100)
         }
 
-        this.addTodosToApp(clipboard)
+        this.addTodosToApp(source)
 
-    }
-
-
-    removeCurrentTodos() {
-
-
-        for (const todo of this.appTodos) {
-            todo.delayToAppear = '0ms'
-            todo.isRemoved = true
-        }
-        setTimeout(() => (this.appTodos = []), 100)
     }
 
 
     addTodosToApp(source: any) {
 
         const todosObj = new Todos(source)
-        if (!todosObj.todos.length) return
 
         this.totalTime.seconds = todosObj.totalTime.seconds
 
         if (this.totalTime.isChanged) {
             this.changeTotalTime()
         }
-
         this.changeTimeTillView()
+
 
         for (const todo of todosObj.todos) {
             const todoComponent = new TodoComponent(this.totalTime)
@@ -125,48 +138,27 @@ export class AppComponent {
             this.appTodos.push(todoComponent)
         }
 
-
     }
 
     reactOnTodoToggle() {
-        if (this.totalTime.isChanged) {
-            this.changeTotalTime()
-        }
+        if (!this.totalTime.isChanged) return
+        this.changeTotalTime()
         this.changeTimeTillView()
     }
 
 
     @HostListener('window:keydown', ['$event'])
     cmdV(event: KeyboardEvent) {
-
-        if (event.metaKey && event.key == "v") {
-            this.addTodosFromClipboard()
-        }
-
-
+        if (!(event.metaKey && event.key == "v")) return
+        this.addTodosFromClipboard()
     }
 
 
-    @HostListener('click') // TEST
-    onClick() {
-        // this.removeCurrentTodos()
-    }
-
-    onDragOver(event: DragEvent) {
+    async onDragOver(event: DragEvent) {
         event.preventDefault()
 
         const text = event.dataTransfer?.getData('text')
-        if (!text) return
-
-        if (this.appTodos.length) {
-            this.removeCurrentTodos()
-            setTimeout(() => (
-                this.addTodosToApp(text)
-            ), 100)
-        } else {
-            this.addTodosToApp(text)
-        }
-
+        this.removeAndAddTodos(text)
     }
 
 
